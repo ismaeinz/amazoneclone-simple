@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/GlobalState";
 import CheckoutProduct from "./CheckoutProduct";
 import CurrencyFormat from "react-currency-format";
 import { getBasketTotal } from "../context/AppReducer";
 import "./Payment.css";
+import { CartElement } from "@stripe/react-stripe-js";
+import axios from "axios";
 const Payment = () => {
   const { basket, user } = useAuth();
+  useEffect(() => {
+    const getClientSecret = async () => {
+      const response = await axios({
+        method: "post",
+        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
+      });
+    };
+  }, [basket]);
+  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="payment">
       <div className="payment-container">
@@ -44,7 +59,8 @@ const Payment = () => {
         <div className="payment-section">
           <h3> Payment Methods</h3>
           <div className="payment-details">
-            <form>
+            <form onSubmit={handleSubmit}>
+              <CartElement onChange={handleChange} />
               <CurrencyFormat
                 renderText={(value) => <h3>Order Total:{value}</h3>}
                 decimalScale={2}
