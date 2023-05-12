@@ -23,7 +23,7 @@
 .payment-details {
   flex: 0.8;
 }
-.payment-detaills > form {
+.payment-details > form {
   max-width: 400px;
 }
 .payment-details .payment-priceContainer > h3 {
